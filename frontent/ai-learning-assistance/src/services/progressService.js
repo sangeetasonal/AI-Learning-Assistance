@@ -1,18 +1,32 @@
-import axiosInstance from '../utils/axiosInstance';
-import { API_PATHS } from '../utils/apiPaths';
+// import axiosInstance from '../utils/axiosInstance';
+// import { API_PATHS } from '../utils/apiPaths';
 
-const getDashboardData = async () => {
-    try {
-        const response = await axiosInstance.get(API_PATHS.PROGRESS.DASHBOARD_DATA);    
-        return response.data;
-    }
-    catch (error) {
-        throw error.response?.data || { message: 'Failed to fetch dashboard data' };
-    }
+// const getDashboardData = async () => {
+//     try {
+//         const response = await axiosInstance.get(API_PATHS.PROGRESS.DASHBOARD_DATA);    
+//         return response.data;
+//     }
+//     catch (error) {
+//         throw error.response?.data || { message: 'Failed to fetch dashboard data' };
+//     }
+// };
+
+// const progressService = {
+//     getDashboardData
+// };
+
+// export default progressService;
+
+
+import apiClient from "../utils/apiClient";
+import { API_PATHS } from "../utils/apiPaths";
+
+const getDashboardData = () => {
+  return apiClient(API_PATHS.PROGRESS.GET_DASHBOARD);
 };
 
 const progressService = {
-    getDashboardData
+  getDashboardData,
 };
 
 export default progressService;
