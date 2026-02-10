@@ -1,31 +1,34 @@
-const BASE_URL = "http://localhost:8000";
+import { BASE_URL } from "./apiPaths";
 
 const apiClient = async (url, options = {}) => {
   const token = localStorage.getItem("token");
 
   const config = {
     headers: {
-      "Content-Type": "application/json",
       Accept: "application/json",
       ...(token && { Authorization: `Bearer ${token}` }),
     },
     ...options,
   };
 
+  // Auto-handle JSON bodies
+  if (config.body && !(config.body instanceof FormData)) {
+    config.headers["Content-Type"] = "application/json";
+    config.body = JSON.stringify(config.body);
+  }
+
   try {
     const response = await fetch(`${BASE_URL}${url}`, config);
 
+    const data = await response.json().catch(() => null);
+
     if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      throw errorData || { message: "Something went wrong" };
+      throw data || { message: "Something went wrong" };
     }
 
-    return response.json();
+    return data;
   } catch (error) {
-    if (error.name === "AbortError") {
-      throw { message: "Request timeout" };
-    }
-    throw error;
+    throw error?.message ? error : { message: "Network error" };
   }
 };
 

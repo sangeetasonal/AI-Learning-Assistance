@@ -76,20 +76,22 @@ import { API_PATHS } from "../utils/apiPaths";
 /**
  * LOGIN
  */
-const login = (email, password) => {
+const login = ({ email, password }) => {
   return apiClient(API_PATHS.AUTH.LOGIN, {
     method: "POST",
-    body: JSON.stringify({ email, password }),
+    body: { email, password },
   });
 };
+
 
 /**
  * REGISTER
  */
-const register = (username, email, password) => {
+
+const register = ({ username, email, password }) => {
   return apiClient(API_PATHS.AUTH.REGISTER, {
     method: "POST",
-    body: JSON.stringify({ username, email, password }),
+    body: { username, email, password },
   });
 };
 
@@ -106,7 +108,7 @@ const getProfile = () => {
 const updateProfile = (userData) => {
   return apiClient(API_PATHS.AUTH.UPDATE_PROFILE, {
     method: "PUT",
-    body: JSON.stringify(userData),
+    body: userData, // ✅ object
   });
 };
 
@@ -116,7 +118,7 @@ const updateProfile = (userData) => {
 const changePassword = (passwords) => {
   return apiClient(API_PATHS.AUTH.CHANGE_PASSWORD, {
     method: "POST",
-    body: JSON.stringify(passwords),
+    body: passwords, // ✅ object
   });
 };
 
